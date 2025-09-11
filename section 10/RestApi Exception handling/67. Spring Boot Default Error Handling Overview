@@ -1,0 +1,25 @@
+What You’ve Covered So Far
+Spring Boot Default Error Handling:
+
+Automatically returns a JSON error response with fields like timestamp, status, error, and path.
+Example: If a user with a given ID doesn’t exist, it might return a 500 Internal Server Error, which is not ideal.
+Why Customize Error Responses?
+
+Clients often expect a specific format and accurate status codes (e.g., 404 Not Found instead of 500).
+Custom error responses improve clarity, debugging, and client-side handling.
+Target Custom Format:
+
+
+🛠️ What’s Coming Next
+In the upcoming lectures, you’ll likely implement:
+
+Custom Exception Classes (e.g., UserNotFoundException)
+Global Exception Handler using @ControllerAdvice
+Custom Error Response DTO
+Mapping Exceptions to HTTP Status Codes
+✅ Pro Tip
+When you build your @ControllerAdvice class, make sure to:
+
+Use @ExceptionHandler for each custom exception.
+Return ResponseEntity<CustomErrorResponse> with appropriate status codes.
+Log the errors for debugging and monitoring.
