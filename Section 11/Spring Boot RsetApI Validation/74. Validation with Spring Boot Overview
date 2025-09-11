@@ -1,0 +1,62 @@
+🧾 What Is REST API Request Validation?
+In a Spring Boot application, validating incoming data (like user input in a POST request) is crucial to ensure:
+
+Data integrity
+Preventing errors
+Providing meaningful feedback to clients
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------
+✅ Java Bean Validation API
+Java provides a standard specification for validation called Java Bean Validation API (JSR 380). However, it’s just a specification — it needs an implementation.
+
+🔧 Hibernate Validator
+Hibernate Validator is the reference implementation of the Java Bean Validation API.
+Spring Boot integrates Hibernate Validator out of the box.
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+📦 How to Enable Validation in Spring Boot
+Just add this dependency in your pom.xml:
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-validation</artifactId>
+</dependency>
+
+This pulls in Hibernate Validator and other required libraries.
+--------------------------------------------------------------------------------------------------------------------------
+🏷️ Common Validation Annotations
+Here are the most frequently used annotations:
+
+Annotation	Purpose
+@NotNull	Field must not be null
+@NotEmpty	Field must not be null or empty (for strings, collections, etc.)
+@NotBlank	Field must not be null, empty, or whitespace (for strings)
+@Size(min, max)	Validates length/size of strings, arrays, collections
+@Min(value)	Minimum numeric value allowed
+@Max(value)	Maximum numeric value allowed
+@Email	Validates that the field is a valid email format
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+🛠️ How It Works in Spring Boot
+Add annotations to your DTO (Data Transfer Object):
+public class UserDTO {
+    @NotBlank(message = "First name is required")
+    private String firstName;
+
+    @Email(message = "Email should be valid")
+    @NotBlank(message = "Email is required")
+    private String email;
+
+    @Size(min = 6, message = "Password must be at least 6 characters")
+    private String password;
+}
+
+
+
+Use @Valid in your controller:
+@PostMapping("/users")
+public ResponseEntity<?> createUser(@Valid @RequestBody UserDTO userDto) {
+    // Your logic here
+}
+
+
+
+Handle validation errors globally (optional but recommended):
+
+You can use a @ControllerAdvice class to catch and format validation errors.
