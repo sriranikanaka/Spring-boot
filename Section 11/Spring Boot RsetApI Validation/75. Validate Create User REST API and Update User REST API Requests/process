@@ -1,0 +1,49 @@
+✅ Steps to Implement Validation in Spring Boot REST APIs
+Step 1: Add Validation Dependency
+Add the following to your pom.xml:
+    <dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-validation</artifactId>
+</dependency>
+
+This includes Hibernate Validator, the reference implementation of the Java Bean Validation API.
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Step 2: Add Validation Annotations to DTO Class
+In your UserDto class, annotate the fields like this:
+
+import jakarta.validation.constraints.*;
+
+public class UserDto {
+
+    @NotEmpty(message = "First name must not be empty")
+    private String firstName;
+
+    @NotEmpty(message = "Last name must not be empty")
+    private String lastName;
+
+    @NotEmpty(message = "Email must not be empty")
+    @Email(message = "Email should be valid")
+    private String email;
+
+    // Getters and setters
+}
+These annotations ensure:
+
+Fields are not null or empty
+Email is in valid format
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Step 3: Enable Validation in Controller
+In your UserController, use @Valid to trigger validation:
+
+@PostMapping("/users")
+public ResponseEntity<?> createUser(@Valid @RequestBody UserDto userDto) {
+    // Your logic here
+}
+
+@PutMapping("/users/{id}")
+public ResponseEntity<?> updateUser(@PathVariable Long id, @Valid @RequestBody UserDto userDto) {
+    // Your logic here
+}
+
+
+
