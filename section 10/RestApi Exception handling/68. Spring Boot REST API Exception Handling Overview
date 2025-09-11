@@ -1,0 +1,8 @@
+If a user with a given ID does not exist in the database:
+
+Throw a custom exception.
+Return a custom error response with:
+timestamp
+message
+path
+errorCode (e.g., "USER_NOT_FOUND")
