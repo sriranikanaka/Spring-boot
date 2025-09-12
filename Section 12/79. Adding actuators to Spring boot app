@@ -1,0 +1,333 @@
+The info endpoint is used to expose custom metadata about your app.
+You configure it via application.properties.
+You must enable it explicitly using management.info.env.enabled=true.
+
+i added this : management.endpoints.web.exposure.include=* 
+-----------------------------------------------------------------------------------------------------------------------
+
+1. /info :
+Add this in application.properties
+management.info.env.enabled=true
+
+
+info.app.name=Spring Boot RESTful Web Services
+info.app.description=Spring Boot RESTful Web Services Demo
+info.app.version=1.0.0
+------------------------------------------------------------------------
+2./health:
+🩺 Spring Boot Actuator – Health Endpoint
+The /actuator/health endpoint is used to check the health status of your Spring Boot application. It helps you monitor whether your app is running properly and gives insights into system components like disk space, databases, etc.
+✅ Default Behavior
+When you access:
+
+http://localhost:8080/actuator/health
+
+You’ll see a simple response like:
+{
+  "status": "UP"
+}
+This means your application is running fine.
+
+🔍 How to Show Detailed Health Info:
+To get more detailed information (like disk space, database status, etc.), you need to add this property in application.properties:
+*management.endpoint.health.show-details=always
+This tells Spring Boot to always show full health details, not just the status.
+
+🛠️ Restart and Access
+After adding the property:
+
+Restart your Spring Boot application.
+Go to your browser and visit
+http://localhost:8080/actuator/health
+--------------------------------------------------------------------------------------------------------------------------------------------
+3. /Bean:
+🌱 Spring Boot Actuator – Beans Endpoint
+The /actuator/beans endpoint provides a complete list of all Spring beans registered in your application context. This includes:
+
+Beans you explicitly define (like UserController, UserServiceImpl, UserRepository)
+Beans auto-configured by Spring Boot (like DispatcherServlet, DataSource, etc.)
+
+🔍 Why Is It Useful?
+Helps you understand the internal structure of your application.
+Shows dependencies between beans.
+Reveals bean scopes (usually singleton by default).
+Displays bean types and resource locations.
+
+🛠️ How to Use It
+Make sure you’ve added the actuator dependency:
+In application.properties, expose the endpoint:
+
+📌 Summary
+The /actuator/beans endpoint is a powerful debugging and learning tool.
+It shows how Spring Boot wires your application behind the scenes.
+You can search for specific beans and see their dependencies and configurations.
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+4./condition
+🔍 Spring Boot Actuator – Conditions Endpoint
+The /actuator/conditions endpoint provides a detailed auto-configuration report. It helps you understand why certain Spring Boot configurations were applied or skipped.
+
+✅ How to Access It
+Visit:
+
+http://localhost:8080/actuator/conditions
+Make sure you’ve exposed all endpoints in application.properties:
+
+
+📊 What You’ll See
+The report is divided into two main sections:
+
+1. Positive Matches
+These are the auto-configuration classes that were applied because their conditions were met.
+
+Example: If you have spring-boot-starter-data-jpa in your classpath, you’ll see JPA-related configurations here.
+These matches are based on @Conditional annotations (like @ConditionalOnClass, @ConditionalOnProperty, etc.)
+2. Negative Matches
+These are the auto-configuration classes that were not applied because their conditions were not met.
+
+Example: If you don’t have RabbitMQ or Cassandra dependencies, their auto-configurations will appear here.
+This helps you understand why certain features are not active in your app.
+🧠 Why Is This Useful?
+Helps in debugging configuration issues
+Shows which dependencies triggered auto-configuration
+Explains why some features are disabled
+Useful for performance tuning and customizing behavior
+📌 Summary
+The /actuator/conditions endpoint gives a behind-the-scenes look at Spring Boot’s auto-configuration.
+It categorizes configurations into positive and negative matches.
+Helps you understand how Spring Boot decides what to configure based on your project setup.
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+5. /mapping
+🔗 Spring Boot Actuator – Mappings Endpoint
+The /actuator/mappings endpoint shows all the HTTP request mappings in your Spring Boot application. It helps you understand:
+
+Which URL paths are available
+Which controller methods handle them
+What HTTP methods (GET, POST, PUT, DELETE, etc.) are supported
+✅ How to Access It
+Visit:
+
+http://localhost:8080/actuator/mappings
+Make sure this is enabled in your application.properties:
+
+
+🧭 What You’ll See
+The mappings are organized under the dispatcherServlet section. This is the core servlet that handles web requests in Spring MVC.
+
+Example:
+If you have a UserController with methods like:
+
+createUser() → POST /api/users
+getUserById() → GET /api/users/{id}
+updateUser() → PUT /api/users/{id}
+deleteUser() → DELETE /api/users/{id}
+getAllUsers() → GET /api/users
+The mappings endpoint will show:
+
+The URL path
+The HTTP method
+The controller class and method name
+The bean name and method signature
+🔍 Why Is It Useful?
+Helps you debug routing issues
+Ensures all endpoints are correctly mapped
+Useful for API documentation
+Lets you verify custom and auto-configured mappings
+📌 Summary
+/actuator/mappings shows all request mappings in your app.
+You can see which controller method handles which URL and HTTP method.
+Great for debugging, documentation, and learning how Spring Boot routes requests.
+--------------------------------------------------------------------------------------------------------------------------------
+
+6./configprops 
+⚙️ Spring Boot Actuator – ConfigProps Endpoint
+The /actuator/configprops endpoint displays all the configuration properties used in your Spring Boot application. This includes:
+
+Properties defined in your application.properties or application.yml file
+Properties bound to beans annotated with @ConfigurationProperties
+Auto-configured properties from Spring Boot itself
+✅ How to Access It
+Visit:
+
+http://localhost:8080/actuator/configprops
+Make sure this is enabled in your application.properties:
+
+
+🔍 What You’ll See
+The response is a structured JSON showing:
+
+Bean name (e.g., spring.datasource, management.endpoints.web)
+Prefix used in configuration
+Properties and their values
+Source of the configuration (e.g., application file, auto-configured)
+Example:
+If you have this in application.properties:
+
+
+You’ll see something like:
+
+
+🧠 Why Is It Useful?
+Helps you verify configuration values
+Shows default values and overridden values
+Useful for debugging misconfigurations
+Lets you inspect auto-configured beans and their properties
+📌 Summary
+/actuator/configprops shows all configuration properties in your app.
+Includes both custom and auto-configured properties.
+Great for debugging, auditing, and understanding Spring Boot internals.
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+7./metrics
+
+📊 Spring Boot Actuator – Metrics Endpoint
+The /actuator/metrics endpoint provides real-time metrics about your Spring Boot application. It helps you monitor performance, resource usage, and system health.
+
+✅ How to Access It
+Visit:
+
+http://localhost:8080/actuator/metrics
+Make sure this is enabled in your application.properties:
+
+
+🔍 What You’ll See
+When you first access /metrics, you’ll see a list of available meter names like:
+
+jvm.memory.used
+jvm.memory.max
+jvm.threads.live
+disk.total
+disk.free
+system.cpu.usage
+hikaricp.connections
+jdbc.connections.active
+Each meter name represents a specific metric. You can get detailed info by visiting:
+
+http://localhost:8080/actuator/metrics/{meter-name}
+📈 Examples of Metrics You Can Explore
+1. Memory Usage
+jvm.memory.used → Current memory used
+jvm.memory.max → Max memory available
+2. Disk Space
+disk.total → Total disk space
+disk.free → Free disk space
+3. Threads
+jvm.threads.live → Number of live threads
+jvm.threads.states → Thread states (runnable, waiting, etc.)
+4. Database Connections
+jdbc.connections.active → Active DB connections
+hikaricp.connections.max → Max connections in HikariCP pool
+5. JVM Info
+jvm.info → JVM vendor, version, runtime
+🧠 Why Is It Useful?
+Helps you monitor application performance
+Useful for debugging memory leaks or thread issues
+Great for setting up alerts and dashboards (e.g., with Prometheus + Grafana)
+Provides insight into system health in production
+📌 Summary
+/actuator/metrics gives you access to real-time performance data.
+You can drill down into specific metrics using meter names.
+Essential for observability, monitoring, and performance tuning.
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+8. The /env & /threaddump Endpoints
+
+🌍 Actuator – Environment (/env) Endpoint
+✅ What It Does
+The /actuator/env endpoint exposes all the environment properties used by your Spring Boot application. This includes:
+
+Active profiles
+Application properties (from .properties or .yml files)
+System properties (Java system-level settings)
+Environment variables (OS-level settings)
+🔍 Why It's Useful
+Helps you debug configuration issues
+Lets you verify which properties are active
+Shows where each property came from (e.g., system, file, environment)
+🧠 Example Insights
+server.port=8080
+spring.datasource.url=jdbc:mysql://...
+management.endpoints.web.exposure.include=*
+Active profiles: [] (empty if none are set)
+🧵 Actuator – Thread Dump (/threaddump) Endpoint
+✅ What It Does
+The /actuator/threaddump endpoint provides a snapshot of all running threads in your application, including:
+
+Thread names
+Thread states (e.g., RUNNABLE, WAITING)
+Thread priorities
+JVM stack traces
+🔍 Why It's Useful
+Helps you diagnose performance issues
+Useful for debugging deadlocks or thread leaks
+Shows real-time thread activity
+🧠 Example Insights
+Reference Handler → RUNNABLE, priority 10
+Panel Analyzer → WAITING, priority 8
+Single Dispatcher → RUNNABLE, priority 9
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+9./logger
+📚 Actuator – Loggers (/actuator/loggers) Endpoint
+✅ What It Does
+The /actuator/loggers endpoint allows you to view and manage logging levels for different packages and classes in your Spring Boot application at runtime.
+
+This is especially useful for:
+
+Debugging issues without restarting the app
+Dynamically changing log levels (e.g., from INFO to DEBUG)
+Monitoring which loggers are active and their current levels
+🔗 How to Access It
+Visit:
+
+http://localhost:8080/actuator/loggers
+Make sure this is enabled in your application.properties:
+🔍 What You’ll See
+When you access /actuator/loggers, you’ll get a JSON response showing:
+
+Configured log levels for packages (e.g., com.example.controller)
+Effective log levels (what’s currently being used)
+A list of all available loggers
+
+How to Change Log Level Dynamically
+You can send a POST request to:
+http://localhost:8080/actuator/loggers/{logger-name}
+With a JSON body like:
+{
+  "configuredLevel": "DEBUG"
+}
+
+This will change the log level for that logger without restarting the application.
+ Why Is It Useful?
+Helps in live debugging without downtime
+Useful for troubleshooting production issues
+Allows fine-grained control over logging behavior
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+10./shutdown
+🛑 Actuator – Shutdown (/actuator/shutdown) Endpoint
+✅ What It Does
+The /actuator/shutdown endpoint allows you to gracefully shut down your Spring Boot application via an HTTP request.
+
+This is useful for:
+
+Controlled shutdowns in cloud or container environments
+Triggering shutdowns remotely for maintenance or updates
+🔐 Important Notes
+Disabled by default for safety reasons.
+You must explicitly enable it in your application.properties:
+management.endpoint.shutdown.enabled=true
+management.endpoints.web.exposure.include=shutdown
+
+> once enabled ,you can send a post request to:
+http://localhost:8080/actuator/shutdown
+>the application will terminate immediately after the request is processed.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
