@@ -1,0 +1,67 @@
+STEP1:
+Go To SpringDoc Maven Depency Add the latest Version
+<!-- https://mvnrepository.com/artifact/org.springdoc/springdoc-openapi-starter-webmvc-ui -->
+<dependency>
+    <groupId>org.springdoc</groupId>
+    <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+    <version>2.8.13</version>
+</dependency>
+
+reload the maven dependency
+🔍 Why this is important:
+This starter dependency bundles everything you need:
+Swagger UI for interactive documentation.
+Spring WebMVC integration.
+OpenAPI 3 support.
+You don’t need to manually add Swagger or WebJar dependencies — it’s all included.
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+STEP2":
+🛠️ 2. Running the Application
+Once the dependency is added and Maven changes are loaded, you ran the Spring Boot app. The embedded Tomcat server started on port 8080.
+
+🔍 Why this matters:
+SpringDoc automatically scans your controllers and DTOs.
+It exposes the Swagger UI at:
+http://localhost:8080/swagger-ui/index.html
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+🌐 3. Accessing Swagger UI
+You visited the Swagger UI and saw:
+
+Default API title and description.
+All your REST endpoints listed.
+DTO class details (like UserDto).
+🔍 Why this is powerful:
+You get live documentation of your API.
+You can test endpoints directly from the browser.
+It’s a great tool for both developers and API consumers.
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+🧪 4. Testing REST APIs from Swagger UI
+You tested:
+
+Create User
+Update User
+Get User by ID
+Get All Users
+Delete User
+Each test showed:
+
+Request body in JSON format.
+HTTP status codes (e.g., 201 Created, 200 OK).
+Response body with updated or fetched data.
+Confirmation in the database.
+🔍 Why this is better than Postman:
+No need to switch tools.
+Swagger UI is self-documenting and interactive.
+Great for quick testing, demoing, and debugging.
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+💡 Extra Tips & Best Practices
+📌 Customize Swagger UI Path
+You can change the default Swagger UI path in application.properties:
+springdoc.swagger-ui.path=/docs
+
+Then access it via:
+
+http://localhost:8080/docs
+
+
+
