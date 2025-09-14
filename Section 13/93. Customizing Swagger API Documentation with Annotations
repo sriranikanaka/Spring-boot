@@ -1,0 +1,217 @@
+1. Controller-Level Documentation
+You started by annotating your UserController class with:
+@Tag(name = "CRUD REST APIs for User Resource", description = "Create user, update user, get user, get all users and delete user")
+This helps Swagger group and describe your controller in the UI.
+
+
+2. Method-Level Documentation
+For each REST endpoint (Create, Read, Update, Delete), you added:@Operation(summary = "Create User REST API", description = "Create user REST API is used to save user in a database")
+@ApiResponse(responseCode = "201", description = "HTTP Status 201 CREATED")
+You repeated this pattern for:
+
+Get user by ID (responseCode = "200")
+
+Get all users
+
+Update user
+
+Delete user
+
+This makes each endpoint self-explanatory in Swagger UI.
+
+
+package Net.javaguides.springboot.controller;
+
+import Net.javaguides.springboot.dto.UserDto;
+import Net.javaguides.springboot.entity.User;
+import Net.javaguides.springboot.exception.ErrorDetails;
+import Net.javaguides.springboot.exception.ResourceNotFoundException;
+import Net.javaguides.springboot.service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
+import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.WebRequest;
+
+import java.time.LocalDateTime;
+import java.util.List;
+
+@Tag(
+        name = "CRUD REST APIs for User Resourse",
+        description =  "CRUD REST APIs - Create User,update User, Get User,Get User,Get All User,Delete User "
+)
+@RestController
+@AllArgsConstructor
+@RequestMapping("api/users")
+public class UserController {
+
+    private UserService userService;
+
+    @Operation(
+            summary = "Create User REST API",
+            description = "Create User REST API is Used to save in a database"
+    )
+    @ApiResponse(
+            responseCode = "201",
+            description = "HTTP Status 201 CREATED"
+    )
+    // build create user REST API
+
+    @PostMapping
+    public ResponseEntity<UserDto> createUser(@Valid @RequestBody UserDto userDto){
+        UserDto savedUser = userService.creatUser(userDto);
+        return new ResponseEntity<>(savedUser, HttpStatus.CREATED);
+    }
+
+    @Operation(
+            summary = "Get User By ID REST API",
+            description = "Get User By ID REST API is Used to get a single user from the database"
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "HTTP Status 200 SUCCESS"
+    )
+
+    //build get user by id REST API
+    //http://localhost:8080/api/users/id
+    @GetMapping("/{id}")
+    public ResponseEntity<UserDto> getUserById(@PathVariable("id") Long userId){
+        UserDto user = userService.getUserById(userId);
+        return new ResponseEntity<>(user,HttpStatus.OK);
+    }
+
+    @Operation(
+            summary = "Get All User  REST API",
+            description = "Get All User REST API is Used to get a single user from the database"
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "HTTP Status 200 SUCCESS"
+    )
+    // build get all users REST API
+    //http://localhost:8080/api/users
+    @GetMapping
+    public ResponseEntity<List<UserDto>> getAllUser(){
+        List<UserDto> users = userService.getAllUsers();
+        return ResponseEntity.ok(users);
+    }
+
+    @Operation(
+            summary = "Update User REST API",
+            description = "Update User By ID REST API is Used to Update a particular user in the database"
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "HTTP Status 200 SUCCESS"
+    )
+
+    //build update the users REST API
+    @PutMapping("{id}")
+    public ResponseEntity<UserDto> updateUser(@Valid@PathVariable("id") long userId,
+                                           @RequestBody UserDto user) {
+
+        user.setId(userId);
+
+
+        UserDto updatedUser = userService.updateUser(user);
+
+        return new ResponseEntity<>(updatedUser, HttpStatus.OK);
+    }
+
+    @Operation(
+            summary = "Delete User REST API",
+            description = "Delete User By ID REST API is Used to Delete a particular user in the database"
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "HTTP Status 200 SUCCESS"
+    )
+    //build Delete User RestAPI
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteUser(@PathVariable("id") Long userId){
+        userService.deleteUser(userId);
+        return new ResponseEntity<>("User Successfully deleted!",HttpStatus.OK);
+
+    }
+
+   /* @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<ErrorDetails> handleResourceNotFoundException(ResourceNotFoundException exception,
+                                                                        WebRequest webRequest){
+        ErrorDetails errorDetails = new ErrorDetails(
+                LocalDateTime.now(),
+                exception.getMessage(),
+                webRequest.getDescription(false),
+                "USER_NOT_FOUND"
+        );
+        return new ResponseEntity<>(errorDetails,HttpStatus.NOT_FOUND);
+    }*/
+}
+
+
+
+
+
+
+
+
+3. Model-Level Documentation
+
+You then annotated your UserDto class like this:
+
+package Net.javaguides.springboot.dto;
+
+import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import jakarta.validation.constraints.*;
+
+@Schema(
+        description = "UserDto Model Information"
+)
+@Setter
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
+public class UserDto {
+
+    private Long id;
+
+    @Schema(
+            description = "User First Name"
+    )
+
+    @NotEmpty(message = "First name must not be empty")
+    private String firstName;
+    @Schema(
+            description = "User Last Name"
+    )
+
+
+    @NotEmpty(message = "Last name must not be empty")
+    private String lastName;
+
+    @Schema(
+            description = "User Email"
+    )
+
+
+    @NotEmpty(message = "Email must not be empty")
+    @Email(message = "Email should be valid")
+    private String email;
+
+        // Getters and setters
+    }
+
+
+
+
+
+
+This ensures that the Swagger UI shows clear descriptions for each field in the schema section.
+
