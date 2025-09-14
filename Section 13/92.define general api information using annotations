@@ -1,0 +1,105 @@
+Great! Let's now define general API information using annotations provided by SpringDoc OpenAPI. This will replace the default Swagger UI title and description with your own custom metadata.
+🧾 Step-by-Step: Define General API Info
+You’ll use the @OpenAPIDefinition annotation at the main application class level (or a configuration class).
+
+✅ 1. Import Required Annotations
+Make sure you import these:
+
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.info.Info;
+import io.swagger.v3.oas.annotations.info.Contact;
+import io.swagger.v3.oas.annotations.info.License;
+
+✅ 2. Add Annotation to Your Main Class
+Here’s a complete example:
+@OpenAPIDefinition(
+    info = @Info(
+        title = "User Management API",
+        version = "1.0",
+        description = "This API allows CRUD operations on users.",
+        contact = @Contact(
+            name = "Sri Rani Kanaka Ratnam",
+            email = "sri.rani@example.com",
+            url = "https://your-portfolio.com"
+        ),
+        license = @License(
+            name = "Apache 2.0",
+            url = "https://www.apache.org/licenses/LICENSE-2.0"
+        )
+    )
+)
+@SpringBootApplication
+public class UserManagementApplication {
+    public static void main(String[] args) {
+        SpringApplication.run(UserManagementApplication.class, args);
+    }
+}
+
+📌 What Each Field Means
+Field          	Description
+title	           The name of your API shown at the top of Swagger UI
+version 	        API version (e.g., 1.0, v2)
+description	      A short summary of what your API does
+contact	          Your name, email, and website (optional)
+license	          License info (optional but good for public APIs)
+
+🔍 Result in Swagger UI
+After restarting your Spring Boot app and visiting:
+
+http://localhost:8080/swagger-ui/index.html
+
+package Net.javaguides.springboot;
+
+
+
+import io.swagger.v3.oas.annotations.ExternalDocumentation;
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.info.Contact;
+import io.swagger.v3.oas.annotations.info.Info;
+import io.swagger.v3.oas.annotations.info.License;
+import org.modelmapper.ModelMapper;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+@SpringBootApplication
+@OpenAPIDefinition(
+		info = @Info(
+				title = "Spring Boot REST API Documentation",
+				description = "Spring Boot REST API Documentation",
+				version = "v1.0",
+				contact = @Contact(
+						name = "Rani",
+						email = "Rani@gmail.com",
+						url = "https://www.youtube.com"
+				),
+				license = @License( // ✅ lowercase 'l'
+				name = "Spring Boot User",
+				url = "https://youtube.com"
+
+				)
+		),
+		externalDocs = @ExternalDocumentation(
+				description = "Spring Boot User Management Documentation",
+				url = "https://www.youtube.com/user_management.html"
+				)
+
+
+)
+
+public class SpringbootRestWebservicesApplication {
+	@Bean
+	public ModelMapper modelMapper(){
+		return new ModelMapper();
+
+	}
+
+	public static void main(String[] args) {
+		SpringApplication.run(SpringbootRestWebservicesApplication.class, args);
+	}
+
+}
+
+
