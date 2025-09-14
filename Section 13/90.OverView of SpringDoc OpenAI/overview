@@ -1,0 +1,27 @@
+Well, SpringDoc OpenAPI Java Library provides integration between Spring Boot and Swagger UI.
+
+SpringDoc OpenAPI Java Library
+
+internally includes Swagger UI to generate the rest API documentation and display that documentation
+
+in a web pages.
+
+For example, if you look at here, this is the swagger UI, you know, documentation. SpringDoc OpenAPI
+
+library internal uses swagger UI related dependencies to automatically generate the documentation
+
+🔍 Summary of Key Concepts Covered
+SpringDoc OpenAPI integrates Swagger UI with Spring Boot to auto-generate REST API documentation.
+You can test APIs directly from the Swagger UI without needing Postman.
+Documentation is available in HTML and JSON formats (/v3/api-docs).
+Supports:
+OpenAPI 3
+Spring Boot 3
+JSR 303 annotations
+OAuth2
+It’s a community-driven project, not maintained by Spring contributors.
+🛠️ Development Steps You’ll Follow
+Add Maven dependency for SpringDoc OpenAPI.
+Define general API info using annotations (@OpenAPIDefinition, etc.).
+Customize endpoint documentation with annotations like @Operation, @ApiResponse.
+Document models using annotations like @Schema.
